@@ -1,0 +1,6 @@
+=========================================================
+This repo is an example of how to create a bounding box
+visualization for a square area of where a Kinect sensor
+is allowed to recognize a person/skeleton. Uses the
+official Kinect SDK.
+=========================================================
