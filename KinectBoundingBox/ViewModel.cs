@@ -30,6 +30,20 @@ namespace KinectBoundingBox
             }
         }
 
+        double boundsDisplaySize;
+        public double BoundsDisplaySize
+        {
+            get
+            {
+                return this.boundsDisplaySize;
+            }
+            set
+            {
+                this.boundsDisplaySize = value;
+                this.OnPropertyChanged("BoundsDisplaySize");
+            }
+        }
+
         double boundsWidth;
         public double BoundsWidth
         {
@@ -74,6 +88,28 @@ namespace KinectBoundingBox
             }
         }
 
+        double torsoOffsetX;
+        public double TorsoOffsetX
+        {
+            get { return this.torsoOffsetX; }
+            set
+            {
+                this.torsoOffsetX = value;
+                this.OnPropertyChanged("TorsoOffsetX");
+            }
+        }
+
+        double torsoOffsetZ;
+        public double TorsoOffsetZ
+        {
+            get { return this.torsoOffsetZ; }
+            set
+            {
+                this.torsoOffsetZ = value;
+                this.OnPropertyChanged("TorsoOffsetZ");
+            }
+        }
+
         bool userIsInRange;
         public bool UserIsInRange
         {
@@ -97,11 +133,20 @@ namespace KinectBoundingBox
         {
             if (App.Current.MainWindow != null)
             {
-                var midpointX = App.Current.MainWindow.Width / 2;
-                var midpointY = App.Current.MainWindow.Height / 2;
+                this.UserIsInRange = this.GetUserIsInRange(e.TorsoPosition);
+                this.TorsoOffsetX =
+                    (this.BoundsWidth / 2) * e.TorsoPosition.X / (this.BoundsDisplaySize / 2);
+                this.TorsoOffsetZ = (this.BoundsDepth / 2) * (e.TorsoPosition.Z 
+                    - (this.MinDistanceFromCamera + this.BoundsDepth / 2)) / (this.BoundsDepth / 2);
 
-                this.HandOffsetX = midpointX + (e.RightHandPosition.X * 500);
-                this.HandOffsetY = midpointY - (e.RightHandPosition.Y * 500);
+                if (this.UserIsInRange)
+                {
+                    var midpointX = App.Current.MainWindow.Width / 2;
+                    var midpointY = App.Current.MainWindow.Height / 2;
+
+                    this.HandOffsetX = midpointX + (e.RightHandPosition.X * 500);
+                    this.HandOffsetY = midpointY - (e.RightHandPosition.Y * 500);
+                }
             }
         }
 

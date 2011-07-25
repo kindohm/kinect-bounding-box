@@ -53,15 +53,26 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended, Version=1.4.0.2, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoundingBoxConfigControl.xaml.cs">
+      <DependentUpon>BoundingBoxConfigControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SkeletonEventArgs.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="ViewModelLoader.cs" />
+    <Page Include="BoundingBoxConfigControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dependencies\Microsoft.Research.Kinect.dll" />
+    <Content Include="Dependencies\WPFToolkit.Extended.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
