@@ -7,122 +7,95 @@
              xmlns:ext="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit.Extended"
              xmlns:local="clr-namespace:KinectBoundingBox"
              DataContext="{Binding ViewModel, Source={StaticResource loader}}">
-    <Grid Background="Black">
-
-        <StackPanel>
-            <Grid Margin="50" VerticalAlignment="Top">
-                <Border
-            BorderBrush="White"
-            BorderThickness="10"
-            CornerRadius="5"
-            Width="{Binding BoundingBoxConfigWidth}"
-            Height="{Binding BoundingBoxConfigDepth}"
-            >
-                    <TextBlock 
-                        Foreground="#cccccc"
-                        Text="{Binding BoundingBoxConfigDeviationZ}"/>
-                </Border>
-
-                <Ellipse
-                Width="30"
-                Height="30"
-                >
-                    <Ellipse.Fill>
-                        <SolidColorBrush Color="{Binding UserInRangeColor}"/>
-                    </Ellipse.Fill>
-                    <Ellipse.RenderTransform>
-                        <TransformGroup>
-                            <TranslateTransform
-                        X="{Binding BoundingBoxConfigDeviationX}"
-                        Y="{Binding BoundingBoxConfigDeviationZ}"/>
-                        </TransformGroup>
-                    </Ellipse.RenderTransform>
-                </Ellipse>
-
-            </Grid>
-
-            <Grid 
-            Width="{Binding BoundingBoxConfigWidth}"
-            VerticalAlignment="Bottom">
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition/>
-                    <RowDefinition Height="70"/>
-                </Grid.RowDefinitions>
+    <Border CornerRadius="10" Background="#EEEEEE" Margin="10" BorderBrush="Black" BorderThickness="2">
+        <Grid>
+            <StackPanel>
+                <Grid Margin="50" VerticalAlignment="Top">
+                    <Border
+                    BorderBrush="Black"
+                    BorderThickness="10"
+                    CornerRadius="5"
+                    Width="{Binding BoundsDisplaySize}"
+                    Height="{Binding BoundsDisplaySize}">
+                    </Border>
+                    <Ellipse
+                    Width="30"
+                    Height="30"
+                    >
+                        <Ellipse.Fill>
+                            <SolidColorBrush Color="{Binding UserPointColor}"/>
+                        </Ellipse.Fill>
+                        <Ellipse.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform
+                                X="{Binding TorsoOffsetX}"
+                                Y="{Binding TorsoOffsetZ}"/>
+                            </TransformGroup>
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
+                </Grid>
+                <Grid 
+                Width="{Binding BoundsDisplaySize}"
+                VerticalAlignment="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
 
 
-                <TextBlock
+                    <TextBlock
                     HorizontalAlignment="Left"
-                    Style="{DynamicResource Label}"
                     Grid.Column="0"
                     Grid.Row="0"
-                    Text="Box Width:"/>
-
-                <ext:DecimalUpDown
+                    Text="Bounds Width:"/>
+                    <ext:DecimalUpDown
                     HorizontalAlignment="Left"
-                    Style="{DynamicResource BoxConfigDecimalUpDown}"
                     Grid.Column="0"
                     Grid.Row="1"
                     Minimum=".4"
                     Maximum="1.5"
                     Increment=".01"
-                    Value="{Binding UserBoxWidth}"
+                    Value="{Binding BoundsWidth}"
                     />
-
-
-                <TextBlock
+                    <TextBlock
                     HorizontalAlignment="Left"
-                    Style="{DynamicResource Label}"
                     Grid.Column="1"
                     Grid.Row="0"
-                    Text="Box Depth:"/>
-
-                <ext:DecimalUpDown
+                    Text="Bounds Depth:"/>
+                    <ext:DecimalUpDown
                     HorizontalAlignment="Left"
-                    Style="{DynamicResource BoxConfigDecimalUpDown}"
                     Grid.Column="1"
                     Grid.Row="1"
                     Minimum=".4"
                     Maximum="1.5"
                     Increment=".01"
-                    Value="{Binding UserBoxDepth}"
+                    Value="{Binding BoundsDepth}"
                     />
-
-                <TextBlock
+                    <TextBlock
                     HorizontalAlignment="Left"
-                    Style="{DynamicResource Label}"
                     Grid.Column="0"
                     Grid.Row="2"
                     Grid.ColumnSpan="2"
                     VerticalAlignment="Bottom"
-                    Text="Distance From Camera:"/>
-
-                <ext:DecimalUpDown
+                    Text="Min Distance From Camera:"/>
+                    <ext:DecimalUpDown
                     HorizontalAlignment="Left"
-                    Style="{DynamicResource BoxConfigDecimalUpDown}"
                     Grid.Column="0"
                     Grid.Row="3"
                     Minimum=".5"
                     Maximum="2.0"
                     Increment=".01"
-                    Value="{Binding UserBoxDistanceFromCamera}"
+                    Value="{Binding MinDistanceFromCamera}"
                     />
-                
-                <Button
-                    Command="{Binding SaveSettingsCommand}"
-                    Grid.Row="4"
-                    Grid.ColumnSpan="2"
-                    VerticalAlignment="Bottom"
-                    Content="Save"/>
-            </Grid>
-
-        </StackPanel>
-    </Grid>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>

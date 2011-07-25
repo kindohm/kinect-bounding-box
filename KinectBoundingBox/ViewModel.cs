@@ -1,5 +1,21 @@
-﻿using System.ComponentModel;
-using Microsoft.Research.Kinect.Nui;
+﻿//////////////////////////////////////////////////////////////
+// This code is for example purposes only. There are a 
+// number of optimizations that should be made in this 
+// code but have been excluded to make for a simpler example.
+// Examples of optimizations include the use of constants
+// and/or pre-calculating half-values of depths and width
+// when they change so that divisions by two don't have
+// to be done in real time.
+//
+// Love,
+// Mike 
+// 7/25/2011
+//////////////////////////////////////////////////////////////
+
+using System;
+using System.ComponentModel;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace KinectBoundingBox
 {
@@ -15,8 +31,19 @@ namespace KinectBoundingBox
             this.MinDistanceFromCamera = 1.0d;
             this.BoundsDepth = .5d;
             this.BoundsWidth = .5d;
+            this.BoundsDisplaySize = 300;
+            this.kinectService.SkeletonUpdated += new EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+        }
 
-            this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+        bool showBoundingBox = true;
+        public bool ShowBoundingBox
+        {
+            get { return this.showBoundingBox; }
+            set
+            {
+                this.showBoundingBox = value;
+                this.OnPropertyChanged("ShowBoundingBox");
+            }
         }
 
         double minDistanceFromCamera;
@@ -63,6 +90,20 @@ namespace KinectBoundingBox
             {
                 this.boundsDepth = value;
                 this.OnPropertyChanged("BoundsDepth");
+            }
+        }
+
+        Color userPointColor = Colors.Green;
+        public Color UserPointColor
+        {
+            get { return this.userPointColor; }
+            set
+            {
+                if (this.userPointColor != value)
+                {
+                    this.userPointColor = value;
+                    this.OnPropertyChanged("UserPointColor");
+                }
             }
         }
 
@@ -121,6 +162,14 @@ namespace KinectBoundingBox
             }
         }
 
+        public BitmapSource VideoImage
+        {
+            get
+            {
+                return GetColorVideoFrame();
+            }
+        }
+
         void OnPropertyChanged(string property)
         {
             if (this.PropertyChanged != null)
@@ -134,9 +183,12 @@ namespace KinectBoundingBox
             if (App.Current.MainWindow != null)
             {
                 this.UserIsInRange = this.GetUserIsInRange(e.TorsoPosition);
+                this.UserPointColor = this.UserIsInRange
+                    ? Color.FromArgb(255, 0, 255, 0) : Color.FromArgb(255, 255, 0, 0);
+
                 this.TorsoOffsetX =
-                    (this.BoundsWidth / 2) * e.TorsoPosition.X / (this.BoundsDisplaySize / 2);
-                this.TorsoOffsetZ = (this.BoundsDepth / 2) * (e.TorsoPosition.Z 
+                    (this.BoundsDisplaySize / 2) * e.TorsoPosition.X / (this.BoundsWidth / 2);
+                this.TorsoOffsetZ = (this.BoundsDisplaySize / 2) * (e.TorsoPosition.Z
                     - (this.MinDistanceFromCamera + this.BoundsDepth / 2)) / (this.BoundsDepth / 2);
 
                 if (this.UserIsInRange)
@@ -150,17 +202,35 @@ namespace KinectBoundingBox
             }
         }
 
-        bool GetUserIsInRange(Vector torsoPosition)
+        bool GetUserIsInRange(Microsoft.Research.Kinect.Nui.Vector torsoPosition)
         {
-            return torsoPosition.Z > this.MinDistanceFromCamera &&
+            return torsoPosition.Z > this.MinDistanceFromCamera &
                 torsoPosition.Z < (this.MinDistanceFromCamera + this.BoundsDepth)
-                && torsoPosition.X > -this.BoundsWidth &&
-                torsoPosition.X < this.BoundsWidth;
+                & torsoPosition.X > -this.BoundsWidth / 2 &
+                torsoPosition.X < this.BoundsWidth / 2;
         }
 
         public void Cleanup()
         {
             this.kinectService.SkeletonUpdated -= kinectService_SkeletonUpdated;
+        }
+
+        BitmapSource GetColorVideoFrame()
+        {
+            if (this.kinectService.LatestVideoImage.Bits == null)
+            {
+                return null;
+            }
+
+            return BitmapSource.Create(
+                this.kinectService.LatestVideoImage.Width,
+                this.kinectService.LatestVideoImage.Height,
+                96,
+                96,
+                PixelFormats.Bgr32,
+                null,
+                this.kinectService.LatestVideoImage.Bits,
+                this.kinectService.LatestVideoImage.Width * this.kinectService.LatestVideoImage.BytesPerPixel);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

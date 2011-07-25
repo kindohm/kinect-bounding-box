@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Research.Kinect.Nui;
 
 namespace KinectBoundingBox
 {
@@ -6,6 +7,8 @@ namespace KinectBoundingBox
     {
         void Initialize();
         void Cleanup();
+        PlanarImage LatestVideoImage { get; }
         event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+        
     }
 }
