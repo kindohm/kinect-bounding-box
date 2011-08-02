@@ -162,14 +162,6 @@ namespace KinectBoundingBox
             }
         }
 
-        public BitmapSource VideoImage
-        {
-            get
-            {
-                return GetColorVideoFrame();
-            }
-        }
-
         void OnPropertyChanged(string property)
         {
             if (this.PropertyChanged != null)
@@ -213,25 +205,7 @@ namespace KinectBoundingBox
         public void Cleanup()
         {
             this.kinectService.SkeletonUpdated -= kinectService_SkeletonUpdated;
-        }
-
-        BitmapSource GetColorVideoFrame()
-        {
-            if (this.kinectService.LatestVideoImage.Bits == null)
-            {
-                return null;
-            }
-
-            return BitmapSource.Create(
-                this.kinectService.LatestVideoImage.Width,
-                this.kinectService.LatestVideoImage.Height,
-                96,
-                96,
-                PixelFormats.Bgr32,
-                null,
-                this.kinectService.LatestVideoImage.Bits,
-                this.kinectService.LatestVideoImage.Width * this.kinectService.LatestVideoImage.BytesPerPixel);
-        }
+        }     
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

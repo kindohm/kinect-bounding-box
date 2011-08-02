@@ -18,15 +18,7 @@
                 </Ellipse.RenderTransform>
             </Ellipse>
         </Canvas>
-        
-        <Image 
-            x:Name="videoImage"
-            Width="200"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Margin="10"
-            />
-        
+                
         <local:BoundingBoxConfigControl
             Opacity=".85"
             Visibility="{Binding ShowBoundingBox, Converter={StaticResource BooleanToVisibilityConverter}}"

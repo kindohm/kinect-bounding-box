@@ -12,17 +12,7 @@ namespace KinectBoundingBox
         {
             runtime = new Runtime();
             runtime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(runtime_SkeletonFrameReady);
-            runtime.VideoFrameReady += new EventHandler<ImageFrameReadyEventArgs>(runtime_VideoFrameReady);
-            runtime.Initialize(RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor);
-            runtime.VideoStream.Open(ImageStreamType.Video, 2,
-                  ImageResolution.Resolution640x480, ImageType.Color);
-        }
-
-        public PlanarImage LatestVideoImage { get; private set; }
-
-        void runtime_VideoFrameReady(object sender, ImageFrameReadyEventArgs e)
-        {
-            this.LatestVideoImage = e.ImageFrame.Image;
+            runtime.Initialize(RuntimeOptions.UseSkeletalTracking);
         }
 
         void runtime_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)

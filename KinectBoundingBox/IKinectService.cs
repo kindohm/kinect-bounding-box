@@ -7,7 +7,6 @@ namespace KinectBoundingBox
     {
         void Initialize();
         void Cleanup();
-        PlanarImage LatestVideoImage { get; }
         event EventHandler<SkeletonEventArgs> SkeletonUpdated;
         
     }
